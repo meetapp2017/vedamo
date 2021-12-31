@@ -17,7 +17,7 @@ class App extends Sql
     parent::__construct();
 
     if (isset($_POST['text_search']))
-      $this->text_search = $_POST['text_search'];
+      $this->text_search = mysqli_real_escape_string($this->conn, $_POST['text_search']);
 
     if (isset($_POST['country_code']))
       $this->country_code = $_POST['country_code'];

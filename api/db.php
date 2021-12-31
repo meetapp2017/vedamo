@@ -4,7 +4,7 @@ include_once('sql.php');
 class DB extends Sql
 {
 
-	private $users_count = 100000;
+	private $users_count = 10000;
 
 	function __construct()
 	{
@@ -31,18 +31,22 @@ class DB extends Sql
 	private function create_users()
 	{
 
+		$sql = "insert into users (username, lastname, email, country_code)";
+		$values = "";
+
 		for ($i = 0; $i < $this->users_count; ++$i) {
 
 			$username = $this->rand_str(10);
 			$lastname = $this->rand_str(10);
 			$email = $this->rand_str(20) . '@abv.bg';
 			$country_code = rand(1, 20);
-
-			$sql = "insert into users (username, lastname, email, country_code) 
-			values ('$username', '$lastname', '$email', $country_code)";
-
-			$this->conn->query($sql);
+			$values =  $values . "('$username', '$lastname', '$email', $country_code), ";			
 		}
+
+		$sql = $sql . ' VALUES' . $values;
+		$sql = rtrim($sql, ", ");
+		$this->conn->query($sql);
+		//print_r($sql);
 	}
 
 	private function create_countries()
